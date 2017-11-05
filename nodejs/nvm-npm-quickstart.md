@@ -1,4 +1,4 @@
-# Node.js 시작하기
+# nvm-npm-quickstart
 
 ### 1. nvm 
 #### 1.1 nvm이란 
