@@ -1,8 +1,4 @@
-
-
-### jQuery 
-
-##### 1. jQuery 시작하기
+# jquery-basic
 
 ```javascript
 $(document).ready(function () { 
@@ -22,9 +18,9 @@ window.jQuery = window.$ = jQuery;
 
 
 
-#### 2. 문서객체 선택과 탐색
+#### 1. 선택자 ([w3schools 실습예제 보기](https://www.w3schools.com/jquery/trysel.asp))
 
-##### 2.1 jQuery 선택자
+##### 1.1 기본 선택자
 
 ```javascript
 $(*).css('color','red');			// 전체 선택자
@@ -39,10 +35,14 @@ $('h1.item').css('color','red');		// 특정 클래스속성을 가지는 태그 
 $('.item.select').css('color','red');	// 복수의 클래스속성을 모두 가지는 태그 선택
 ```
 
+##### 1.2 자손/후손 선택자
+
 ```javascript
 $('body > *').css('color','red');	// 자손 선택자 (body태그 바로 아래 요소만 선택)
 $('body *').css('color','red');		// 후손 선택자 (body태그 안 요소 전체 선택)
 ```
+
+##### 1.3 속성 선택자
 
 ```js
 $('input[type="text"]').val("Hello")	// 속성 선택자
@@ -53,8 +53,9 @@ $('input[type$="text"]').val("Hello")	// 속성 값이 특정 값으로 끝나�
 $('input[type*="text"]').val("Hello")	// 속성 값이 특정 값을 포함하는 문서객체 선택
 ```
 
+##### 1.4 입력양식 필터 선택자
+
 ```javascript
-// 입력양식 필터 선택자
 $('input:text').val("Hello")			// 입력양식 필터선택자로 간단하게 표현
 $('select > option:selected').val()		// option객체 중 선택된 태그의 값 
 $('요소:checked')		
@@ -64,16 +65,18 @@ $('요소:focus')
 $('요소:input')
 ```
 
+##### 1.5 위치 필터 선택자 
+
 ```js
-// 위치 필터 선택자
 $('요소:odd')		// 홀수 번째 위치한 문서객체 선택
 $('요소:even')	// 짝수 번째 위치한 문서객체 선택
 $('요소:first')	// 첫 번째에 위치한 문서객체 선택
 $('요소:last')	// 마지막에 위치한 문서객체 선택
 ```
 
+##### 1.6 함수 필터 선택자 
+
 ```javascript
-// 함수 필터 선택자
 $('요소:contain(문자열)')	// 특정 문자열 포함한
 $('요소:eq(n)')			// n번째 위치
 $('요소:gt(n)')			// n번째 초과한 위치
@@ -83,9 +86,11 @@ $('요소:not(선택자)')		// 선택자와 일치하지 않는
 $('요소:nth-child(3n+1)')	// 3n+1번째에 위치하는
 ```
 
-##### 2.2  메서드로 문서객체 선택하기
 
-2.2.1 필터 메서드: $('요소').filter()
+
+#### 2. 문서객체 검색/탐색
+
+##### 2.1 필터 메서드: $.filter()
 
 ````js
 $(selector).filter(selector);
@@ -97,28 +102,59 @@ $('h3').filter(function (index) {
     background:'white',
  	color:'red'
 });
-
 // 문서 객체 탐색 메서드 체이닝과 탐색 종료 메서드.end() 
-$('hi').filter(':even').css('color','red').end().filter(':odd').css('background','white');
+$('hi').filter(':even').css('color','red')
+  .end().filter(':odd').css('background','white');
 ````
 
-2.2.2 특정위치 선택 메서드: $.eq(), $.first(), $.last()
+##### 2.2 특정 위치 선택 메서드: $.eq(), $.first(), $.last()
 
+````js
+$('h1').eq(0).css('background','white');
+$('h1').first().css('background','white');
+$('h1').last().css('background','white');
 ````
 
-````
+##### 2.3 추가 선택 메서드: $.add()
 
-2.2.3 추가 선택 메서드: $.add()
+```js
+$('h1').css('background','white').add('h2').css('float','left');
+```
 
-2.2.4 특징 판별 메서드: $.is()
+##### 2.4 특징 판별 메서드: $.is()
 
-2.2.5 특정 태그 선택 메서드: $.find()
+```js
+$('h1').each(function(){
+ 	 if($(this).is('.select')){
+		$(this).css('background','white');
+ 	 }
+})
+```
 
-2.2.6 $.parseXML()로 문서 탐색
+##### 2.5 특정 태그 선택 메서드: $.find() 와 $.parseXML()로 문서 탐색하기
 
-2.2.7 $.parent() 메서드
+```js
+var xml = '<friend> </friend>...';
+var xmlDoc = $.parseXML(xml);
 
-##### 2.3. 배열 관리: $.each() , $.forEach()
+$(xmlDoc).find('friend').each(function(index){
+	var output = '';
+  	output +='<h1'
+});
+
+```
+
+##### 2.7 $.parent() 메서드              
+
+```js
+$('button').click(fuction(){
+    $(this).text('비활성화하기');
+	$(this).parent().css('background','white');
+	$(this).parent().find('span').text('활성화');
+});
+```
+
+##### 2.8 배열 관리: $.each() , $.forEach()
 
 ````js
 [].forEach(function(item, index){  }); 	// ECMAScript 5 에서 추가됨
@@ -134,13 +170,13 @@ $(document).ready(function () {
   });
   
   // $.addClass() 유사사용법 참고
-   $('h1').addClass(function(index){	
+  $('h1').addClass(function(index){	
 		return 'className-' + index;
   }); 
 });
 ````
 
-##### 2.4. 객체 확장: $.extend()
+##### 2.9 객체 확장: $.extend()
 
 ````js
 $(document).ready(function () { 
@@ -150,12 +186,12 @@ $(document).ready(function () {
     	region: '서울',
     	age: '30',
     	hobby: '기타연주'
-  })
+  });
 });
 ````
 
 ````js
-// $.extend()로 객체 결함
+// $.extend()로 객체 결합
 var object = $.extend({a:10},{a:20,b:20},{c:30});
 ````
 
@@ -167,24 +203,23 @@ function test(options) {
     valueB:20,
     valueC:30
   },options);
-}
+};
 ````
 
-##### 2.5. 충돌 방지: $.noConflict()
+##### 2.10 충돌 방지: $.noConflict()
 
 ````js
 // 자바스크립트 프레임워크, 플러그인간 충돌 방지
 $.noConflict();
 jQuery(document).ready(function(){
- 	 //jQuery 사용
+
 });
 
 // 간단한 표현: 충돌 제거와 사용 분리
 $.noConflict();
 var J = jQuery;
-
 J(document).ready(function(){
-	  //jQuery 사용
+
 });
 ````
 
@@ -194,9 +229,60 @@ J(document).ready(function(){
 
 ##### 3.1 문서 객체 클래스 속성 조작: $.addClass(),  $.removeClass()
 
+```js
+$('h1').addClass('className');
+$('h1').removeClass('className');
+
+$('h1').toggleClass('className');
+```
+
 ##### 3.2 문서 객체 속성 조작: $.attr(), $.removeAttr()
 
+```js
+// $(selector).attr(name, value);
+$('img').attr('width',200);
+
+// $(selector).attr(name, funcrtion(index, attr){ });
+$('img').attr('width', function(index){
+  	return (index + 1) * 100;
+});
+
+// $(selector).attr(object);
+$('img').attr({
+    width: function (index){
+      	return (index + 1) * 100;
+    }
+});
+```
+
+```js
+$('h1').removeAttr('data-index');
+```
+
 ##### 3.3 문서 객체 스타일 조작: $.css()
+
+```js
+// 스타일 값 검사
+var color = $('h1').css('color');
+
+// 스타일 값 추가
+$('h1').css('color','red');
+
+// 스타일 값 추가-2
+var color =['red','green','blue']
+$('h1').css('color', function(index){
+  	return color[index];
+});
+
+// 스타일 값 추가-3
+var color =['red','green','blue']
+$('h1').css({
+  color: function (index){
+    return color[index];
+  },
+  background: 'black'
+});
+```
 
 ##### 3.4 문서 객체 내부 조작: $.html(), $.text()
 
@@ -209,7 +295,7 @@ $('div').text(function(index){
   	return '<h1> 제목' + index + '</h1>';
 })
 
-// 매개변수 두개 사용
+// 매개변수 두개 사용한 경우
 $('h1').html(function(index,html){
   	return '***'+ html + '***';
 })
@@ -217,7 +303,22 @@ $('h1').html(function(index,html){
 
 ##### 3.5 문서 객체 삭제:  $.remove(), $.empty() 
 
+```js
+$('h1').first().remove();
+$('div').empty();
+```
+
 ##### 3.6 문서 객체 생성: $('요소').attr('속성', '값')
+
+```js
+$('<h1></h1>');
+
+// 문서 객체 생성. 텍스트 노드 추가. 문서 객체 연결 
+$('<h1></h1>').html('Hello World..!').appendTo('body');
+
+// 문서 객체 생성. 이미지 속성 추가. 문서 객체 연결 
+$('<img/>').attr('src', 'img.jpg').appendTo('body');
+```
 
 ##### 3.7 문서 객체 삽입과 이동
 
@@ -262,11 +363,83 @@ $(document).ready(function () {
 
 #### 4. 이벤트 
 
-    $('h1').on('click', function(){
-        $(this).html(function(index,html){
-            return html + '+';
-        });
-    })
+##### 4.1 이벤트 연결/제거
+
+```js
+// 이벤트 연결
+$('h1').on('click', function(){
+    $(this).html(function(index,html){
+        return html + '+';
+    });
+});
+
+$('h1').on({
+	mouseenter: function () { $(this).addClass('reverse');},
+	mouseleave: function () { $(this).removeClass('reverse');}
+});
+```
+```js
+// 간단한 이벤트 연결.hover()
+$('h1').hover(function(){
+  	$(this).addClass('reverse');
+}, function(){
+  	$(this).removeClass('reverse');
+});
+
+// 이벤트 제거하기.off()
+$('h1').click(function(){
+  	alert('이벤트 발생!');
+  	$(this).off();
+});
+
+// 한번만 연결하기.one()
+$('h1').one('click',function(){
+  	alert('이벤트 발생!');
+});
+```
+
+##### 4.2 이벤트 연결 범위 한정하기 (delegate)
+
+```js
+$('h1').on('click','h1', function(){
+    $(this).html(function(index,html){
+        return html + '+';
+    });
+});
+```
+
+##### 4.3 이벤트 객체
+
+```js
+event.pageX 			// 브라우저 화면기준 마우스 X좌표 위치
+event.pageY				// 브라우저 화면기준 마우스 Y좌표 위치
+event.preventDefault()	// 기본 이벤트 제거
+event.stopPropagation()	// 이벤트 전달을 제거
+```
+
+##### 4.4 이벤트 강제 발생 $.trigger()
+
+```js
+// 1초마다 함수 실행하기
+setInterval(function (){
+  	$('h1').last().click();
+},1000);
+
+// 매개변수 전달
+$('h1').click(function (event, data1, data2){ alert(data1 + data2); });
+$('h1').eq(1).trigger('click',[232,123]);
+```
+
+##### 4.5 마우스 이벤트
+
+##### 4.6 키보드 이벤트
+
+##### 4.7 윈도우 이벤트 
+
+##### 4.8 입력 양식 이벤트
+
+##### 4.9 화살표 함수 사용하기
+
 
 
 #### 5. 효과 
