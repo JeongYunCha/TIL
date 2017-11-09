@@ -1,4 +1,4 @@
-# jquery-basic
+# jQuery 시작하기
 
 ```javascript
 $(document).ready(function () { 
@@ -447,10 +447,6 @@ $('h1').eq(1).trigger('click',[232,123]);
 
 
 ##### 
-
-
-
-
 
 
 
