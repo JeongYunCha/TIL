@@ -1,7 +1,5 @@
 # node 웹 서버 만들기
 
-[TOC]
-
 ### 1. http모듈로 간단한 웹서버 만들기
 
 
@@ -30,142 +28,7 @@ app.listen(54321, function() {
 });
 ```
 
-
-
-####  2.1. 라우터와 미들웨어
-
-- 라우팅하다<br>사용자의 요청에 따라 사용자가 필요한 정보를 제공. 클라이언트의 요청패스에 따라 각각을 담당하는 함수로 분리시키는 것
-- 미들웨어 함수<br>- 요청/응답 오브젝트(req/res),  요청-응답 주기 중 그 다음의 미들웨어 함수 대한 액세스 권한을 갖는 함수<br>- `next()`를 호출하여 그 다음 미들웨어 함수에 제어를 전달 
-
-
-
-#### 2.1.1. static 미들웨어
-
-```js
-var options = {
-  dotfiles: 'ignore',
-  etag: false,
-  extensions: ['htm', 'html'],
-  index: false,
-  maxAge: '1d',
-  redirect: false,
-  setHeaders: function (res, path, stat) {
-    res.set('x-timestamp', Date.now());
-  }
-}
-app.use(express.static('public', options));
-app.use(express.static('uploads'));
-app.use(express.static('files'));
-```
-
-
-
-#### 2.1.2. 어플리케이션 레벨 미들웨어 
-
-- `app.use()`  및  `app.METHOD()` 함수 사용
-
-
-
-- 오류 처리 미들웨어
-
-```js
-app.use(function(err, req, res, next){
-  console.error(err.stack);
-  res.status(500).send('Sonething broke!')
-});
-```
-
-
-
-#### 2.1.3. 라우터 레벨 미들웨어 
-
-사용자의 요청마다 url확인, 미들웨어 함수를 호출하지않고 사용자의 요청 기능이 무엇인지 패스를 기준으로 구별한다.
-
-```js
-// 라우터 객체 참조
-var router = express.Router();
-
-// 라우팅 함수 등록 
-router.route('/path/...').get(callback);	
-router.route('/path/...').post(callback);
-router.route('/path/...').put(callback);
-router.route('/path/...').delete(callback);
-router.route('/path/...').all(callback);
-
-// 라우터 객체를 app 객체에 등록
-app.use('/', router);
-```
-
-```js
-// 등록되지 않은 패스에 대해 페이지 오류 응답
-app.all('*', function(req,res) {
-  res.status(404).send('<h1>404 error! 페이지가 없습니다.</h1>')
-})
-```
-
-
-
-#### 2.1.4. 써드파티 미들웨어 [(목록보기)](http://expressjs.com/ko/resources/middleware.html) 
-
-- 써드파티 미들웨어는 외장모듈. 설치필요
-
-```bash
-$ npm install <모듈명> --save
-```
-
-- __body-parser__ : 클라이언트가 POST방식으로 요청할때 body 안의 요청파라미터 파싱
-
-```js
-var bodyParser = require('body-parser');
-app.use(bodyParser) 
-```
-
-- __cookie-parser__ : 요청 객체에 쿠키 속성을 추가 (클라이언트에서 쿠키객체를 그대로 전달받는다.)
-- ​
-
-```js
-var cookieParser = require('cookie-parser');
-app.use(express.cookieParser());
-
-var router = express.Router();
-
-// 요청 패스 처리하는 콜백 함수 등록.
-router.route('/path/showCookie').get(function(req, res){
-  res.send(req.cookies);
-  
-  // 쿠키 설정
-  res.cookie('user', {
-    id:'mike',
-    name: '마이크',
-    authorized: true
-  });
-  
-  // redirect로 응답
-  res.redirect('/path/showCookie');
-});
-
-app.use('/', router);
-```
-
-- __express-error-handler__ : 오류 핸들러 모듈
-
-```js
-var expressErrorHandler = require('express-error-handler');
-
-// 모든 router 처리 끝난 후 404 오류 페이지 처리
-var errorHandler = expressErrorHandler({
-  static: {
-    '404': './public/404.html'
-  }
-})
-
-app.use( expressErrorHandler.httpError(404) );
-app.use( errorHandler );
-```
-
-
-
-#### 2.3. 요청 객체와 응답 객체
+#### 2.1. 요청 객체와 응답 객체
 
 - http모듈에서 사용하는 객체와 같고 그외 익스프레스에서 사용할수있는 추가적인 객체
 
@@ -201,6 +64,193 @@ router.route('/path/:id').get( function(req, res){
 });
 
 app.use('/', router);
+```
+
+
+
+
+
+####  2.2. 라우터와 미들웨어
+
+- 라우팅하다<br>사용자의 요청에 따라 사용자가 필요한 정보를 제공. 클라이언트의 요청패스에 따라 각각을 담당하는 함수로 분리시키는 것
+- 미들웨어 함수<br>- 요청/응답 오브젝트(req/res),  요청-응답 주기 중 그 다음의 미들웨어 함수 대한 액세스 권한을 갖는 함수<br>- `next()`를 호출하여 그 다음 미들웨어 함수에 제어를 전달 
+
+
+
+#### 2.2.1. static 미들웨어
+
+```js
+var options = {
+  dotfiles: 'ignore',
+  etag: false,
+  extensions: ['htm', 'html'],
+  index: false,
+  maxAge: '1d',
+  redirect: false,
+  setHeaders: function (res, path, stat) {
+    res.set('x-timestamp', Date.now());
+  }
+}
+app.use(express.static('public', options));
+app.use(express.static('uploads'));
+app.use(express.static('files'));
+```
+
+
+
+#### 2.2.2. 어플리케이션 레벨 미들웨어 
+
+- `app.use()`  및  `app.METHOD()` 함수 사용
+
+
+
+- 오류 처리 미들웨어
+
+```js
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.status(500).send('Sonething broke!')
+});
+```
+
+
+
+#### 2.2.3. 라우터 레벨 미들웨어 
+
+사용자의 요청마다 url확인, 미들웨어 함수를 호출하지않고 사용자의 요청 기능이 무엇인지 패스를 기준으로 구별한다.
+
+```js
+// 라우터 객체 참조
+var router = express.Router();
+
+// 라우팅 함수 등록 
+router.route('/path/...').get(callback);	
+router.route('/path/...').post(callback);
+router.route('/path/...').put(callback);
+router.route('/path/...').delete(callback);
+router.route('/path/...').all(callback);
+
+// 라우터 객체를 app 객체에 등록
+app.use('/', router);
+```
+
+```js
+// 등록되지 않은 패스에 대해 페이지 오류 응답
+app.all('*', function(req,res) {
+  res.status(404).send('<h1>404 error! 페이지가 없습니다.</h1>')
+})
+```
+
+
+
+#### 2.2.4. 써드파티 미들웨어 [(목록보기)](http://expressjs.com/ko/resources/middleware.html) 
+
+- 써드파티 미들웨어는 외장모듈. 설치필요
+
+```bash
+$ npm install <모듈명> --save
+```
+
+- __body-parser__ : 클라이언트가 POST방식으로 요청할때 body 안의 요청파라미터 파싱
+
+```js
+var bodyParser = require('body-parser');
+app.use(bodyParser) 
+```
+
+- __cookie-parser__ : 요청 객체에 쿠키 속성을 추가 (클라이언트에서 쿠키객체를 그대로 전달받는다.)
+- __express-session__ : 클라이언트(사용자)의 상태정보를 서버에 저장
+
+```js
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+
+app.use(express.cookieParser());
+var router = express.Router();
+
+// 요청 패스 처리하는 콜백 함수 등록
+router.route('/path/showCookie').get(function(req, res){
+  res.send(req.cookies);
+  
+  // 쿠키 설정
+  res.cookie('user', {
+    id:'mike',
+    name: '마이크',
+    authorized: true
+  });
+  res.redirect('/path/showCookie');
+});
+
+// 상품정보 라우팅 함수 등록
+router.route('/process/product').get(function(req, res){
+  // 세션 정보 확인후 리다이렉트.
+  if(req.session.user){
+    res.redirect('/public/product.html');
+  } else {
+    res.redirect('/public/login.html');
+  }
+});
+
+app.use('/', router);
+```
+
+```js
+// 로그인 라우팅 함수 등록 
+router.route('/process/login').post(function(req, res){
+  
+  var paramId = req.body.id || req.query.id;
+  var paramPassword = req.body.password || req.query.password;
+  
+  if(req.session.user){
+    console.log('이미 로그인되어 상품 페이지로 이동합니다.')
+    
+    res.redirect('/public/product.html');
+  } else {
+    // 세션 저장
+    app.use(expressSession({
+      id: paramId,
+      name: '마이크',
+      authorized: true
+    }));   
+    ... 
+  }
+});
+```
+
+```js
+// 로그아웃 라우팅 함수 등록 
+router.route('/process/logout').post(function(req, res){
+
+	if(req.session.user){
+		console.log('로그아웃합니다.');
+		req.session.destory(function(err{
+			if (err) {throw err;}
+        
+			console.log('세션삭제. 로그아웃 완료') 
+			res.redirect('/public/login.html');
+		});   
+	} else {
+		console.log('로그인 안된상태.');
+		res.redirect('/path/login.html');
+	};
+    ... 
+});
+```
+
+- __express-error-handler__ : 오류 핸들러 모듈
+
+```js
+var expressErrorHandler = require('express-error-handler');
+
+// 모든 router 처리 끝난 후 404 오류 페이지 처리
+var errorHandler = expressErrorHandler({
+  static: {
+    '404': './public/404.html'
+  }
+})
+
+app.use( expressErrorHandler.httpError(404) );
+app.use( errorHandler );
 ```
 
 
