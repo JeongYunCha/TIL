@@ -20,6 +20,45 @@ console.log(result);	// 4. 함수호출
 
 
 
+즉시호출 함수표현식<br>글로벌 스코프에 정의된 함수는 어디서든지 접근가능 --> 즉시실행함수 내에 처리로직 모아두면 변수명 충돌 방지 가능
+
+```js
+// 기명 즉시실행함수
+(function myFunction() {
+  var a = 3;
+  var b = 5;
+  return a * b;
+}());
+// 익명 즉시실행함수
+(function () {
+  var a = 3;
+  var b = 5;
+  return a * b;
+}());
+```
+
+
+
+내부함수: 함수 내부에서 선언된 함수. <br>내부/자식에서 외부/부모함수 변수에 접근가능하지만 에서 외부/부모함수에서  내부/자식 호출할 수없다.
+
+```js
+function parent(param) {
+  var parentVar = param;
+  function child() {
+    var childVar = 'lee';
+    console.log(parentVar + ' ' + childVar); // Hello lee
+  }
+  child();
+  console.log(parentVar + ' ' + childVar);
+  // Uncaught ReferenceError: childVar is not defined
+}
+parent('Hello');
+```
+
+
+
+
+
 콜백함수 :  파라미터로 전달되는 함수
 
 ```js
@@ -36,7 +75,7 @@ add(10, 10, function(result){
 
 
 
-내부함수: 함수 내부에서 선언된 함수. 외부에서 호출할 수없다. <br>클로저: 리턴값으로 함수를 반환해 외부에서 내부함수에 접근할수 있다.
+클로저: 리턴값으로 함수를 반환해 외부에서 내부함수에 접근할수 있다.
 
 ```js
 // 함수 안에서 값을 반환할 때 새로운 함수를 만들어 반환하는 방법
