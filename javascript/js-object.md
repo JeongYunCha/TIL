@@ -1,3 +1,5 @@
+^2017-11-09^
+
 # JavaScript - 객체
 
 #### 1. 기본자료형은 변경 불가능한 값이다 
@@ -33,8 +35,8 @@ console.log(user2.name); // Kim
 객체를 불변객체로 만들어 레퍼런스를 참조한 다른객체에서 값을 의도치않게 변경하는일을 막는다.
 
 -  [__Object.assign__](http://poiemaweb.com/js-immutability#21-objectassign) : 객체의 방어적 복사
-- [__Object.freeze__](http://poiemaweb.com/js-immutability#22-objectfreeze) : 불변객체화를 통한 객체 변경 방지
-- [__Immutable.js__](http://poiemaweb.com/js-immutability#23-immutablejs) : List, Stack, Map, OrderedMap, Set, OrderedSet, Record와 같은 영구 불변 (Permit Immutable) 데이터 구조를 제공
+-  [__Object.freeze__](http://poiemaweb.com/js-immutability#22-objectfreeze) : 불변객체화를 통한 객체 변경 방지
+-  [__Immutable.js__](http://poiemaweb.com/js-immutability#23-immutablejs) : List, Stack, Map, OrderedMap, Set, OrderedSet, Record와 같은 영구 불변 (Permit Immutable) 데이터 구조를 제공
 
 
 
