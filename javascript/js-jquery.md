@@ -1,6 +1,8 @@
-^2017-11-06^
-
 # jQuery 시작하기
+
+> 2017-11-06
+
+
 
 ```javascript
 $(document).ready(function () { 

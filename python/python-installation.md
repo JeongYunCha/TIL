@@ -1,4 +1,12 @@
+# python 시작하기
+
+> 2017-11-13
+
+
+
 [초보몽키 파이썬 설치가이드](https://wayhome25.github.io/django/2017/04/29/python-dev-environments/#pyenv-설치) 를 참고하여 파이썬 개발환경 설정을 했다!
+
+https://blog.seotory.com/post/2017/03/install-python-in-mac-using-pyenv
 
 
 
