@@ -2,9 +2,9 @@
 
 > 2017-11-13
 
+https://ansuchan.com/how-to-set-python-dev-env/
 
-
-[초보몽키 파이썬 설치가이드](https://wayhome25.github.io/django/2017/04/29/python-dev-environments/#pyenv-설치) 를 참고하여 파이썬 개발환경 설정을 했다!
+[초보몽키 파이썬 설치가이드](https://wayhome25.github.io/django/2017/04/29/python-dev-environments/#pyenv-설치) 
 
 https://blog.seotory.com/post/2017/03/install-python-in-mac-using-pyenv
 
@@ -83,6 +83,21 @@ $ brew install pyenv-virtualenv
 # 설치 후 .zshrc 파일에 아래 내용 추가
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+```
+
+```bash
+$ pyenv virtualenv 3.6.0 css-3.6.0 # css-3.6.0 이라는 가상환경을 추가
+$ pyenv versions # 가상환경 리스트 확인
+
+  system (set by /Users/Leehyunjoo/.pyenv/version)
+  3.6.0
+  3.6.0/envs/css-3.6.0
+  css-3.6.0 # .pyenv 폴더 안에 존재
+
+# 가상환경 실행 및 종료
+$ pyenv activate css-3.6.0
+$ pyenv deactivate
+
 ```
 
 
