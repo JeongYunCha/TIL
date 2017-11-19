@@ -4,7 +4,7 @@
 >
 > 요즘 진행하고 있는 [스터디(그룹웨어 API 만들기)](https://github.com/chachooon/typescript-node-express)에서 테스트 코드를 작성하며 콜백 중첩 문제를 접하게 되었다. 해결책으로 async-await-promise를 사용해보라는 피드백을 받고 ECMA Script6 스펙에 정식포함 되었다는 Promise 패턴을 공부하며 정리해보았다. 스터디 피드백과 검색을 통해 찾은 [블로그](http://programmingsummaries.tistory.com/325), [API 문서](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)를 참고하였다.
 
-
+<br>
 
 자바스크립트는 거의 대부분의 작업들이 비동기로 이루어지고 비동기로 진행되는 작업이 완료되면 완료결과를 콜백함수로 알려주는 패턴이 많이 사용된다. 특정 이벤트가 발생하였을때 사용되는 콜백함수 호출 정도의 간단한 작업에서는 문제가 되지 않지만, 작업의 복잡도가 높아지게 되면 콜백으로 결과를 받은 뒤 다음 작업들을 순차적으로 진행하고자 할때 콜백 중첩으로 코드 관리가 어려지고 비동기작업으로 얻을 수있는 작업 성능 향상도 기대 할수 없게 된다.
 
@@ -12,7 +12,7 @@
 
 
 
-##### 1. Promise 선언부
+#### 1. Promise 선언부
 
 ```js
 // Promise 선언
@@ -37,7 +37,8 @@ const myPromise = (param) => {
 
 
 
-##### 2. Promise 실행부
+
+#### 2. Promise 실행부
 
 __2.1. Promise.prototype.then(onFulfilled, onRejected)__<br>myPromise() 호출로 Promise 객체 리턴한다. 비동기 작업이 완료되었을 때 then()이 호출된다.
 
@@ -64,7 +65,7 @@ myPromise(true)
 
 
 
-##### 3. Promise.all API
+#### 3. Promise.all API
 
 여러개의 비동기 작업이 선행되고 이들이 모두 완료된 후  그다음 작업을 진행하고 싶다면 Promise.all API를 사용한다.
 
@@ -117,7 +118,7 @@ Promise.all([promise1, promise2]).then((values) => {
 
 
 
-##### 4. async-await-promise를 통한 성능향상 
+#### 4. async-await-promise를 통한 성능향상 
 
 A라는 API의 결과와 B라는 API결과를 취합해서 얻은 값으로 작업 하려할때 일반적으로 코드를 작성하면 다음과 같다.
 
