@@ -1,54 +1,38 @@
 # python 시작하기
 
 > 2017-11-13
-
-https://ansuchan.com/how-to-set-python-dev-env/
-
-[초보몽키 파이썬 설치가이드](https://wayhome25.github.io/django/2017/04/29/python-dev-environments/#pyenv-설치) 
-
-https://blog.seotory.com/post/2017/03/install-python-in-mac-using-pyenv
+>
+> [pyenv + virtualenv + autoenv 를 통한 Python 개발 환경 구축하기](https://ansuchan.com/how-to-set-python-dev-env/) 를 참고하여  내가 적용한 내용을 정리하였다.  pyenv install 로 파이썬 설치시 macOS High Sierra 문제로 설치가 되지않는 문제가 있었는데 함께 정리해 두었다.
 
 
 
-### 1. pyenv
+### 1. pyenv로 파이썬 버전 관리하기 
 
-파이썬 버전관리 프로그램 설치
+1.1. pyenv 설치하기
 
 ```bash
 $ brew update
 $ brew install pyenv
 
-$ vi ~/.zshrc  		# .zshrc파일 열어서 아래 내용 입력
-
-export PYENV_ROOT=/usr/local/var/pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+# 사용중인 쉘(bash /zsh)에 맞게 입력
+$ echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+$ echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
 
 $ source ~/.zshrc 	# 재실행
 $ exec "$SHELL" 	# shell 재실행
 ```
 
-
-
-### 2. pyenv로 python 설치
+1.2. pyenv로 python 설치하기
 
 ```bash
-$ pyenv version
-$ pyenv install --list 	# 설치 가능한 패키지 목록 (파이썬 버전별 목록)
-$ pyenv install 3.6.0 	# python 설치
-
-$ python --version		# 현재 사용중인 버전 확인
+$ pyenv version			# 현재 사용중인 파이썬 버전 확인
 $ pyenv versions		# .pyenv 폴더안에 설치된 버전 리스트 확인
 
-$ pyenv shell 3.6.0		# pyhotn 3.6.0으로 shell 실행 > autoenv를 사용하면 별도 지정이 필요 없음
-
-$ pyenv global 3.5.3	# 기본으로 실행된 python 버전 변경
-$ pyenv global system	# 시스템에 설치된 python으로 다시 변경
-
-
+$ pyenv install -list 	# .pyenv로 설치 가능한 파이썬 버전 목록 확인 
+$ pyenv install 3.6.0 	# .pyenv로 python 특정 버전 설치
 ```
 
-- mac os 하이시에라 관련 설치오류 
+1.3. pyenv로 python 설치하기 __→ mac os 하이시에라 관련 설치오류 __
 
 ```bash
 Downloading Python-3.6.0.tar.xz...
@@ -60,11 +44,8 @@ Please consult to the Wiki page to fix the problem.
 https://github.com/pyenv/pyenv/wiki/Common-build-problems
 
 BUILD FAILED (OS X 10.13 using python-build 20160602)
-```
 
-- 해결방법
-
-```bash
+# 해결방법
 brew uninstall openssl && brew install openssl && CFLAGS="-I$(brew --prefix openssl)/include" LDFLAGS="-L$(brew --prefix openssl)/lib" pyenv install 3.6.2
 # 또는 
 CFLAGS="-I$(brew --prefix openssl)/include" LDFLAGS="-L$(brew --prefix openssl)/lib" pyenv install 3.6.3
@@ -72,78 +53,75 @@ CFLAGS="-I$(brew --prefix openssl)/include" LDFLAGS="-L$(brew --prefix openssl)/
 
 
 
-### 3. virtualenv 설치 
+### 2. virtualenv로 파이썬 개발 환경 관리하기 
 
 virtualenv(독립된 개발환경을 제공해주는 프로그램) 를 활용하여 가상 개발환경을 구축한다.
 
+2.1. pyenv-virtualenv 설치하기
+
 ```bash
-# brew로 설치
 $ brew install pyenv-virtualenv
 
-# 설치 후 .zshrc 파일에 아래 내용 추가
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# 사용중인 쉘(bash /zsh)에 맞게 입력
+$ echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+$ echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile
+
+$ source ~/.zshrc 	# 재실행
+$ exec "$SHELL" 	# shell 재실행
 ```
+
+2.2. pyenv-virtualenv로  새로운 개발환경 만들기
 
 ```bash
-$ pyenv virtualenv 3.6.0 css-3.6.0 # css-3.6.0 이라는 가상환경을 추가
-$ pyenv versions # 가상환경 리스트 확인
-
-  system (set by /Users/Leehyunjoo/.pyenv/version)
-  3.6.0
-  3.6.0/envs/css-3.6.0
-  css-3.6.0 # .pyenv 폴더 안에 존재
+# pyenv virtualenv <PYTHON_VERSION> <VIRTUAL_ENV_NAME> 
+$ pyenv virtualenv 3.6.0 my-virtual 	# my-virtual이라는 이름의 가상 환경을 추가
+$ pyenv virtualenv versions 			# 추가된 가상 환경 리스트 확인
 
 # 가상환경 실행 및 종료
-$ pyenv activate css-3.6.0
-$ pyenv deactivate
+$ source activate my-virtual
+$ source deactivate
 
 ```
 
 
 
-### 4. pip & requirement.txt 로 패키지 관리하기
+### 3. pip & requirement.txt 로 패키지 관리하기
 
 ```bash
 $ pip install <패키지명>
-$ pip freeze 						 # 설치한 패키지 리스트 확인
 
-$ pip3 freeze > requirements.txt 	 # 패키지 목록을 txt 파일로 만들기
-$ pip3 install -r requirements.txt 	 # 한번에 패키지 설치
+$ pip list > requirements.txt 		 # 패키지 목록을 txt 파일로 만들기
+$ pip install -r requirements.txt 	 # 한번에 패키지 설치하기
 ```
 
 
 
-### 5. 가상환경 설정
+### 4. autoenv로 자동 실행하기
 
-##### 5.1. pyenv local
+4.1. autoenv 설치하기<br> - [autoenv](https://github.com/kennethreitz/autoenv/blob/master/activate.sh) 는 터미널에서 디렉토리가 변경될 때마다 폴더 안에 있는 .env 파일을 찾는 스크립트이다.
 
 ```bash
-$ pyenv local fc-python(가상환경이름)
-$ pyenv global <가상환경이름>		 # 기본으로 사용할 환경 설정
+$ brew install autoenv
+
+# 사용중인 쉘(bash /zsh)에 맞게 입력
+$ echo 'source $(brew --prefix autoenv)/activate.sh' >> ~/.zshrc
+$ echo 'source $(brew --prefix autoenv)/activate.sh' >> ~/.bash_profile
+
+$ source ~/.zshrc 	# 재실행
+$ exec "$SHELL" 	# shell 재실행
 ```
 
-##### 5.2. autoenv
-
-- autoenv를 설치하고 프로젝트 폴더에 .env 파일을 만들어 자동으로 가상환경이 실행되도록 만든다.
-- autoenv : Directory-based environments, 폴더 안에 .env 파일이 있으면 해당 폴더에 들어갈 때 자동으로 가상환경이 실행된다.
+4.2. autoenv 사용하기<br> - 프로젝트 폴더안에 `.env` 파일을 생성하고 해당 디렉토리에서 자동으로 실행시키고 싶은 스크립트를 넣어두면 된다.
 
 ```bash
-$ brew install autoenv # 설치 (Using Homebrew)
-$ echo "source $(brew --prefix autoenv)/activate.sh" >> ~/.zshrc
-$ exec "$SHELL" # 재실행
+# ~/project_folder/.env
 
-### .env 파일 작성 및 실행
-# 프로젝트 폴더로 이동 후
-$ touch .env
-$ vim .env
+echo “***********************************”  
+echo “Python Virtual Env > Python 2.7.14”  
+echo “***********************************”
 
-# .env 파일에 아래 내용 입력   
-$ pyenv activate css-3.6.0 # 원하는 가상환경 이름 (virtualenv로 생성한) 을 입력
-$ cd ./ # 나갔다가 다시 들어오면 virtualenv 환경이 켜짐
+source activate my-virtual
 ```
-
-
 
 
 
