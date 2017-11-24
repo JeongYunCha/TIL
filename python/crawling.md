@@ -69,9 +69,15 @@ __1.2.2. 특정 키워드에 대해 검색엔진에 검색된 결과리스트를
 
 
 
-API 만들어 웹어플리케이션과 데이터 주고받기
-
-배치 자동화
 
 
+배치 자동화 (AWS Batch)
+
+
+
+client-server 통신 (소켓통신 / Rmote Procedure Call)
+
+API 만들어 웹어플리케이션과 데이터 주고받기 (Restful API)
+
+[RPC에서 REST까지 간단한 개념소개](https://www.slideshare.net/WonchangSong1/rpc-restsimpleintro)
 
